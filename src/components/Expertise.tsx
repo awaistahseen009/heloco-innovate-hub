@@ -1,4 +1,3 @@
-
 import React from "react";
 import { Award, CheckCircle, Medal, Shield } from "lucide-react";
 
@@ -15,12 +14,12 @@ const Expertise = () => {
   ];
 
   const achievements = [
-    "Awarded "Best AI Solution Provider" by Tech Innovate Awards 2022",
-    "Recognized as "Top Web Development Firm" by Global IT Excellence 2021",
+    "Awarded 'Best AI Solution Provider' by Tech Innovate Awards 2022",
+    "Recognized as 'Top Web Development Firm' by Global IT Excellence 2021",
     "Certified Partner of Microsoft, AWS, Google Cloud, IBM Watson, and Salesforce",
     "Featured in Forbes Tech Review for Low-Code Innovation (2023)",
-    "Won "Mobile App of the Year" at Digital Excellence Awards 2020",
-    "Named "Fastest Growing Tech Firm" by Inc. 5000 (2019-2021)"
+    "Won 'Mobile App of the Year' at Digital Excellence Awards 2020",
+    "Named 'Fastest Growing Tech Firm' by Inc. 5000 (2019-2021)"
   ];
 
   const expertise = [
