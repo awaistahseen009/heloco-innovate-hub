@@ -1,5 +1,5 @@
 
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExternalLink } from "lucide-react";
@@ -18,6 +18,17 @@ interface Project {
 const Projects = () => {
   const [activeTab, setActiveTab] = useState("all");
   const titleRef = useScrollAnimation({ direction: "up" });
+  
+  // Create fixed number of refs for project animations
+  const projectRef1 = useScrollAnimation({ direction: "left", delay: 100 });
+  const projectRef2 = useScrollAnimation({ direction: "right", delay: 200 });
+  const projectRef3 = useScrollAnimation({ direction: "left", delay: 300 });
+  const projectRef4 = useScrollAnimation({ direction: "right", delay: 400 });
+  const projectRef5 = useScrollAnimation({ direction: "left", delay: 500 });
+  const projectRef6 = useScrollAnimation({ direction: "right", delay: 600 });
+  
+  // Array of refs to access them by index
+  const projectRefs = [projectRef1, projectRef2, projectRef3, projectRef4, projectRef5, projectRef6];
 
   const projects: Project[] = [
     {
@@ -80,9 +91,16 @@ const Projects = () => {
     ? projects 
     : projects.filter(project => project.category === activeTab);
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <section id="projects" className="py-20 bg-white">
-      <div className="container mx-auto px-4 overflow-hidden">
+    <section id="projects" className="py-20 bg-white overflow-hidden">
+      <div className="container mx-auto px-4">
         <div className="text-center max-w-3xl mx-auto mb-16" ref={titleRef}>
           <h2 className="text-3xl md:text-4xl font-bold text-heloco-darkblue mb-4 font-poppins">
             Our Recent Projects
@@ -143,8 +161,9 @@ const Projects = () => {
           <TabsContent value={activeTab} className="mt-0">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {filteredProjects.map((project, index) => {
-                const direction = index % 2 === 0 ? "left" : "right";
-                const ref = useScrollAnimation({ direction, delay: index * 100 });
+                // Use the ref at the corresponding index, or the first one if index is out of bounds
+                const ref = index < projectRefs.length ? projectRefs[index] : projectRefs[0];
+                
                 return (
                   <div key={index} ref={ref}>
                     <div className="bg-white border border-black rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
@@ -178,7 +197,10 @@ const Projects = () => {
         </Tabs>
 
         <div className="mt-10 text-center">
-          <Button className="bg-heloco-blue hover:bg-heloco-lightblue text-white transition-colors">
+          <Button 
+            className="bg-heloco-blue hover:bg-heloco-lightblue text-white transition-colors"
+            onClick={() => scrollToSection("projects")}
+          >
             View All Projects
           </Button>
         </div>
