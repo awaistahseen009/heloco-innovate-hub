@@ -32,24 +32,24 @@ export const useScrollAnimation = ({
 
     const currentRef = ref.current;
     if (currentRef) {
-      // Add initial animation classes
-      let animationClass = "opacity-0";
+      // Add initial animation classes - use separate add() calls for each class
+      currentRef.classList.add("opacity-0");
       
       switch (direction) {
         case "left":
-          animationClass += " -translate-x-10";
+          currentRef.classList.add("-translate-x-10");
           currentRef.style.transition = "all 0.8s ease-out";
           break;
         case "right":
-          animationClass += " translate-x-10";
+          currentRef.classList.add("translate-x-10");
           currentRef.style.transition = "all 0.8s ease-out";
           break;
         case "up":
-          animationClass += " translate-y-10";
+          currentRef.classList.add("translate-y-10");
           currentRef.style.transition = "all 0.8s ease-out";
           break;
         case "down":
-          animationClass += " -translate-y-10";
+          currentRef.classList.add("-translate-y-10");
           currentRef.style.transition = "all 0.8s ease-out";
           break;
         case "fade":
@@ -57,8 +57,6 @@ export const useScrollAnimation = ({
           currentRef.style.transition = "opacity 0.8s ease-out";
           break;
       }
-
-      currentRef.classList.add(animationClass);
       
       // Create custom class for the "in" animation
       const style = document.createElement("style");
