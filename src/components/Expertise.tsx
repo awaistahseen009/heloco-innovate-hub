@@ -1,7 +1,15 @@
+
 import React from "react";
 import { Award, CheckCircle, Medal, Shield } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const Expertise = () => {
+  const titleRef = useScrollAnimation({ direction: "up" });
+  const metricsRef = useScrollAnimation({ direction: "left", delay: 100 });
+  const achievementsRef = useScrollAnimation({ direction: "up", delay: 200 });
+  const expertiseRef = useScrollAnimation({ direction: "right", delay: 300 });
+  const ctaRef = useScrollAnimation({ direction: "up", delay: 400 });
+
   const metrics = [
     { value: "12", label: "Years of Operation" },
     { value: "500+", label: "Projects Completed" },
@@ -33,10 +41,17 @@ const Expertise = () => {
     "IoT Solutions"
   ];
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
-    <section id="expertise" className="py-20 bg-gray-50">
+    <section id="expertise" className="py-20 bg-gray-50 overflow-hidden">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16" ref={titleRef}>
           <h2 className="text-3xl md:text-4xl font-bold text-heloco-darkblue mb-4 font-poppins">
             Our Experience & Expertise
           </h2>
@@ -46,7 +61,7 @@ const Expertise = () => {
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-16">
-          <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+          <div ref={metricsRef} className="bg-white p-8 rounded-xl shadow-md border border-black transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
             <div className="flex items-center mb-6">
               <Shield className="w-8 h-8 text-heloco-blue mr-3" />
               <h3 className="text-2xl font-semibold text-heloco-darkblue">Key Metrics</h3>
@@ -61,7 +76,7 @@ const Expertise = () => {
             </div>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+          <div ref={achievementsRef} className="bg-white p-8 rounded-xl shadow-md border border-black transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
             <div className="flex items-center mb-6">
               <Award className="w-8 h-8 text-heloco-blue mr-3" />
               <h3 className="text-2xl font-semibold text-heloco-darkblue">Achievements</h3>
@@ -76,7 +91,7 @@ const Expertise = () => {
             </ul>
           </div>
 
-          <div className="bg-white p-8 rounded-xl shadow-md border border-gray-100 transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+          <div ref={expertiseRef} className="bg-white p-8 rounded-xl shadow-md border border-black transform transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
             <div className="flex items-center mb-6">
               <Medal className="w-8 h-8 text-heloco-blue mr-3" />
               <h3 className="text-2xl font-semibold text-heloco-darkblue">Core Expertise</h3>
@@ -91,15 +106,20 @@ const Expertise = () => {
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-heloco-darkblue to-heloco-blue p-1 rounded-xl">
-          <div className="bg-white p-8 rounded-lg text-center">
-            <h3 className="text-2xl font-semibold text-heloco-darkblue mb-4">Ready to Work With Us?</h3>
-            <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
-              Join our 300+ satisfied clients who have transformed their businesses with our innovative solutions.
-            </p>
-            <button className="bg-heloco-blue hover:bg-heloco-lightblue text-white font-medium px-6 py-3 rounded-lg transition-colors">
-              Contact Our Team
-            </button>
+        <div ref={ctaRef}>
+          <div className="bg-gradient-to-r from-heloco-darkblue to-heloco-blue p-1 rounded-xl">
+            <div className="bg-white p-8 rounded-lg text-center border border-black">
+              <h3 className="text-2xl font-semibold text-heloco-darkblue mb-4">Ready to Work With Us?</h3>
+              <p className="text-gray-600 mb-6 max-w-2xl mx-auto">
+                Join our 300+ satisfied clients who have transformed their businesses with our innovative solutions.
+              </p>
+              <button 
+                className="bg-heloco-blue hover:bg-heloco-lightblue text-white font-medium px-6 py-3 rounded-lg transition-colors"
+                onClick={() => scrollToSection("contact")}
+              >
+                Contact Our Team
+              </button>
+            </div>
           </div>
         </div>
       </div>

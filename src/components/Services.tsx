@@ -3,37 +3,49 @@ import React from "react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Brain, Code, PenTool, Smartphone, Globe, ChevronRight, PieChart } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 const ServiceCard = ({ 
   title, 
   description, 
   icon: Icon, 
-  color 
+  color,
+  index
 }: { 
   title: string; 
   description: string; 
   icon: React.ElementType; 
   color: string;
-}) => (
-  <Card className="border border-gray-200 hover:shadow-xl transition-all duration-300 hover:scale-[1.02] h-full bg-white">
-    <CardHeader className="pb-2">
-      <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${color}`}>
-        <Icon className="w-6 h-6 text-white" />
-      </div>
-      <CardTitle className="text-xl font-semibold text-heloco-darkblue">{title}</CardTitle>
-    </CardHeader>
-    <CardContent>
-      <CardDescription className="text-gray-600 mb-4">
-        {description}
-      </CardDescription>
-      <Button variant="link" className="text-heloco-blue hover:text-heloco-lightblue p-0 h-auto font-medium">
-        Learn More <ChevronRight className="ml-1 h-4 w-4" />
-      </Button>
-    </CardContent>
-  </Card>
-);
+  index: number;
+}) => {
+  const direction = index % 2 === 0 ? "left" : "right";
+  const ref = useScrollAnimation({ direction, delay: index * 100 });
+
+  return (
+    <div ref={ref}>
+      <Card className="border border-black hover:shadow-xl transition-all duration-300 hover:scale-[1.02] h-full bg-white">
+        <CardHeader className="pb-2">
+          <div className={`w-12 h-12 rounded-full flex items-center justify-center mb-4 ${color}`}>
+            <Icon className="w-6 h-6 text-white" />
+          </div>
+          <CardTitle className="text-xl font-semibold text-heloco-darkblue">{title}</CardTitle>
+        </CardHeader>
+        <CardContent>
+          <CardDescription className="text-gray-600 mb-4">
+            {description}
+          </CardDescription>
+          <Button variant="link" className="text-heloco-blue hover:text-heloco-lightblue p-0 h-auto font-medium">
+            Learn More <ChevronRight className="ml-1 h-4 w-4" />
+          </Button>
+        </CardContent>
+      </Card>
+    </div>
+  );
+};
 
 const Services = () => {
+  const titleRef = useScrollAnimation({ direction: "up" });
+  
   const services = [
     {
       title: "Artificial Intelligence (AI)",
@@ -76,7 +88,7 @@ const Services = () => {
   return (
     <section id="services" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+        <div className="text-center max-w-3xl mx-auto mb-16" ref={titleRef}>
           <h2 className="text-3xl md:text-4xl font-bold text-heloco-darkblue mb-4 font-poppins">
             Our Services
           </h2>
@@ -87,7 +99,7 @@ const Services = () => {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {services.map((service, index) => (
-            <ServiceCard key={index} {...service} />
+            <ServiceCard key={index} {...service} index={index} />
           ))}
         </div>
 

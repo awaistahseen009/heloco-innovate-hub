@@ -4,6 +4,13 @@ import { Button } from "@/components/ui/button";
 import { ChevronRight } from "lucide-react";
 
 const Hero = () => {
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <div className="relative bg-heloco-darkblue pt-20 overflow-hidden">
       {/* Background grid pattern */}
@@ -21,11 +28,18 @@ const Hero = () => {
               Empowering Businesses with Cutting-Edge Solutions
             </p>
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button className="bg-heloco-blue hover:bg-heloco-lightblue text-white text-base px-6 py-6 transition-all duration-300 transform hover:scale-105">
+              <Button 
+                className="bg-heloco-blue hover:bg-heloco-lightblue text-white text-base px-6 py-6 transition-all duration-300 transform hover:scale-105"
+                onClick={() => scrollToSection("services")}
+              >
                 Explore Services
                 <ChevronRight className="ml-2 h-4 w-4" />
               </Button>
-              <Button variant="outline" className="border-white text-white hover:bg-white/10 hover:text-white px-6 py-6">
+              <Button 
+                variant="outline" 
+                className="border-white text-white hover:bg-white/10 hover:text-white px-6 py-6"
+                onClick={() => scrollToSection("projects")}
+              >
                 Our Projects
               </Button>
             </div>

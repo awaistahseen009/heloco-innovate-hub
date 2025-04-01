@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ExternalLink } from "lucide-react";
+import { useScrollAnimation } from "@/hooks/useScrollAnimation";
 
 interface Project {
   title: string;
@@ -16,6 +17,7 @@ interface Project {
 
 const Projects = () => {
   const [activeTab, setActiveTab] = useState("all");
+  const titleRef = useScrollAnimation({ direction: "up" });
 
   const projects: Project[] = [
     {
@@ -80,8 +82,8 @@ const Projects = () => {
 
   return (
     <section id="projects" className="py-20 bg-white">
-      <div className="container mx-auto px-4">
-        <div className="text-center max-w-3xl mx-auto mb-16">
+      <div className="container mx-auto px-4 overflow-hidden">
+        <div className="text-center max-w-3xl mx-auto mb-16" ref={titleRef}>
           <h2 className="text-3xl md:text-4xl font-bold text-heloco-darkblue mb-4 font-poppins">
             Our Recent Projects
           </h2>
@@ -91,7 +93,7 @@ const Projects = () => {
         </div>
 
         <Tabs defaultValue="all" className="mb-10">
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-8 overflow-x-auto pb-2 -mx-4 px-4">
             <TabsList className="bg-gray-100">
               <TabsTrigger 
                 value="all" 
@@ -140,31 +142,37 @@ const Projects = () => {
 
           <TabsContent value={activeTab} className="mt-0">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {filteredProjects.map((project, index) => (
-                <div key={index} className="bg-white border border-gray-200 rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
-                  <div className="bg-gradient-to-r from-heloco-darkblue to-heloco-blue p-6 text-white">
-                    <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
-                    <p className="text-sm opacity-80">Client: {project.client}</p>
-                  </div>
-                  <div className="p-6">
-                    <p className="text-gray-600 mb-4">{project.description}</p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.map((tech, i) => (
-                        <span key={i} className="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full">
-                          {tech}
-                        </span>
-                      ))}
+              {filteredProjects.map((project, index) => {
+                const direction = index % 2 === 0 ? "left" : "right";
+                const ref = useScrollAnimation({ direction, delay: index * 100 });
+                return (
+                  <div key={index} ref={ref}>
+                    <div className="bg-white border border-black rounded-xl overflow-hidden hover:shadow-xl transition-all duration-300 hover:-translate-y-1">
+                      <div className="bg-gradient-to-r from-heloco-darkblue to-heloco-blue p-6 text-white">
+                        <h3 className="text-xl font-semibold mb-2">{project.title}</h3>
+                        <p className="text-sm opacity-80">Client: {project.client}</p>
+                      </div>
+                      <div className="p-6">
+                        <p className="text-gray-600 mb-4">{project.description}</p>
+                        <div className="flex flex-wrap gap-2 mb-4">
+                          {project.technologies.map((tech, i) => (
+                            <span key={i} className="bg-gray-100 text-gray-700 text-xs px-3 py-1 rounded-full">
+                              {tech}
+                            </span>
+                          ))}
+                        </div>
+                        <div className="flex justify-between text-sm">
+                          <span className="text-gray-500">Duration: {project.duration}</span>
+                          <span className="font-medium text-heloco-blue">Impact: {project.impact}</span>
+                        </div>
+                        <Button variant="link" className="text-heloco-blue hover:text-heloco-lightblue p-0 mt-4 h-auto font-medium">
+                          View Case Study <ExternalLink className="ml-1 h-3 w-3" />
+                        </Button>
+                      </div>
                     </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Duration: {project.duration}</span>
-                      <span className="font-medium text-heloco-blue">Impact: {project.impact}</span>
-                    </div>
-                    <Button variant="link" className="text-heloco-blue hover:text-heloco-lightblue p-0 mt-4 h-auto font-medium">
-                      View Case Study <ExternalLink className="ml-1 h-3 w-3" />
-                    </Button>
                   </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           </TabsContent>
         </Tabs>

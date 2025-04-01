@@ -1,7 +1,7 @@
 
 import React, { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { Menu, X, ChevronDown } from "lucide-react";
+import { Menu, X } from "lucide-react";
 import { Link } from "react-router-dom";
 
 const Navbar = () => {
@@ -27,12 +27,21 @@ const Navbar = () => {
     setIsMenuOpen(!isMenuOpen);
   };
 
+  const scrollToSection = (sectionId: string) => {
+    const element = document.getElementById(sectionId);
+    if (element) {
+      element.scrollIntoView({ behavior: "smooth" });
+      setIsMenuOpen(false);
+    }
+  };
+
   const navLinks = [
-    { name: "Home", path: "/" },
-    { name: "About Us", path: "/about" },
-    { name: "Services", path: "/services" },
-    { name: "Projects", path: "/projects" },
-    { name: "Contact Us", path: "/contact" },
+    { name: "Home", path: "#", onClick: () => scrollToSection("root") },
+    { name: "Services", path: "#services", onClick: () => scrollToSection("services") },
+    { name: "Projects", path: "#projects", onClick: () => scrollToSection("projects") },
+    { name: "Expertise", path: "#expertise", onClick: () => scrollToSection("expertise") },
+    { name: "Testimonials", path: "#testimonials", onClick: () => scrollToSection("testimonials") },
+    { name: "Contact Us", path: "#contact", onClick: () => scrollToSection("contact") },
   ];
 
   return (
@@ -53,18 +62,25 @@ const Navbar = () => {
         {/* Desktop Menu */}
         <div className="hidden md:flex space-x-8">
           {navLinks.map((link) => (
-            <Link
+            <a
               key={link.name}
-              to={link.path}
+              href={link.path}
               className="text-white hover:text-heloco-lightblue font-inter text-sm font-medium transition-colors duration-200"
+              onClick={(e) => {
+                e.preventDefault();
+                link.onClick();
+              }}
             >
               {link.name}
-            </Link>
+            </a>
           ))}
         </div>
 
         <div className="hidden md:block">
-          <Button className="bg-heloco-blue hover:bg-heloco-lightblue transition-colors duration-300 text-white">
+          <Button 
+            className="bg-heloco-blue hover:bg-heloco-lightblue transition-colors duration-300 text-white"
+            onClick={() => scrollToSection("contact")}
+          >
             Get in Touch
           </Button>
         </div>
@@ -89,18 +105,24 @@ const Navbar = () => {
         <div className="md:hidden fixed inset-0 top-[60px] bg-heloco-darkblue bg-opacity-95 z-40">
           <div className="flex flex-col items-center pt-10 space-y-6">
             {navLinks.map((link) => (
-              <Link
+              <a
                 key={link.name}
-                to={link.path}
+                href={link.path}
                 className="text-white hover:text-heloco-lightblue font-inter text-lg font-medium transition-colors duration-200"
-                onClick={() => setIsMenuOpen(false)}
+                onClick={(e) => {
+                  e.preventDefault();
+                  link.onClick();
+                }}
               >
                 {link.name}
-              </Link>
+              </a>
             ))}
             <Button 
               className="bg-heloco-blue hover:bg-heloco-lightblue transition-colors duration-300 text-white mt-4"
-              onClick={() => setIsMenuOpen(false)}
+              onClick={() => {
+                scrollToSection("contact");
+                setIsMenuOpen(false);
+              }}
             >
               Get in Touch
             </Button>
